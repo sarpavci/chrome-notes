@@ -33,8 +33,19 @@
     border-color: hsl(var(--border));
   }
 
-  /* Transparent extension chrome so rounded corners render without white triangles */
-  html,
+  /* Rounded corners on the popup window:
+     Apply border-radius + overflow:hidden to html so Chrome clips the
+     entire document (not just the inner div) to the rounded shape.
+     Without this, border-radius on the app div has no visible effect —
+     the browser popup frame paints square behind it. */
+  html {
+    background: transparent;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
   body {
     background: transparent;
     margin: 0;
