@@ -32,7 +32,7 @@ describe("Generated manifest.json shape", () => {
   });
 
   it("has version derived from package.json", () => {
-    expect(manifest.version).toBe("0.0.1");
+    expect(manifest.version).toBe("1.0.0");
   });
 
   it("has manifest_version 3", () => {
