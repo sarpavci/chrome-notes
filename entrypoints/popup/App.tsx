@@ -139,7 +139,7 @@ export default function App() {
         className="h-7 flex items-center px-3 flex-shrink-0"
         style={{ borderTop: "1px solid #DADCE0" }}
       >
-        <span style={{ fontSize: 11, color: "#5F6368" }}>
+        <span style={{ fontSize: 13, color: "#5F6368" }}>
           {saveStatus === "saving" ? "Saving…" : "Saved"}
         </span>
       </div>

@@ -164,6 +164,16 @@ describe("App — copy button", () => {
   });
 });
 
+describe("App — design tokens", () => {
+  it("status footer renders with 13px body font size", async () => {
+    render(<App />);
+    await waitFor(() => {
+      const footer = screen.getByText("Saved");
+      expect(footer).toHaveStyle({ fontSize: "13px" });
+    });
+  });
+});
+
 describe("App — clear confirm flow", () => {
   it("clear button is disabled when textarea is empty", () => {
     render(<App />);
