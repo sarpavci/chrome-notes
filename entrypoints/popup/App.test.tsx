@@ -174,6 +174,53 @@ describe("App — design tokens", () => {
   });
 });
 
+describe("App — Linear v2 design tokens", () => {
+  it("popup container has Linear canvas background #0f1011", () => {
+    const { container } = render(<App />);
+    const root = container.firstElementChild as HTMLElement;
+    expect(root).toHaveStyle({ backgroundColor: "#0f1011" });
+  });
+
+  it("popup container has 12px rounded corners", () => {
+    const { container } = render(<App />);
+    const root = container.firstElementChild as HTMLElement;
+    expect(root).toHaveStyle({ borderRadius: "12px" });
+  });
+
+  it("popup container clips overflow for rounded corners", () => {
+    const { container } = render(<App />);
+    const root = container.firstElementChild as HTMLElement;
+    expect(root).toHaveStyle({ overflow: "hidden" });
+  });
+
+  it("header title renders with Linear primary text color #f7f8f8", () => {
+    render(<App />);
+    const title = screen.getByText("Notes");
+    expect(title).toHaveStyle({ color: "#f7f8f8" });
+  });
+
+  it("textarea has Linear primary text color #f7f8f8 and correct placeholder", () => {
+    render(<App />);
+    const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+    expect(textarea).toHaveAttribute("placeholder", "Start typing your note…");
+    expect(textarea).toHaveStyle({ color: "#f7f8f8" });
+  });
+
+  it("textarea has accent caret color #7170ff", () => {
+    render(<App />);
+    const textarea = screen.getByRole("textbox") as HTMLTextAreaElement;
+    expect(textarea).toHaveStyle({ caretColor: "#7170ff" });
+  });
+
+  it("status footer text uses muted color #8a8f98", async () => {
+    render(<App />);
+    await waitFor(() => {
+      const savedEl = screen.getByText("Saved");
+      expect(savedEl).toHaveStyle({ color: "#8a8f98" });
+    });
+  });
+});
+
 describe("App — clear confirm flow", () => {
   it("clear button is disabled when textarea is empty", () => {
     render(<App />);
