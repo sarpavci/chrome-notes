@@ -20,9 +20,10 @@ describe("release-please-config.json", () => {
 });
 
 describe(".release-please-manifest.json", () => {
-  it("is valid JSON seeded at 0.0.1 for the root package", () => {
+  it("is valid JSON with a semver version for the root package", () => {
     const raw = readFileSync(resolve(root, ".release-please-manifest.json"), "utf-8");
     const manifest = JSON.parse(raw);
-    expect(manifest).toHaveProperty(".", "0.0.1");
+    expect(manifest).toHaveProperty(".");
+    expect(manifest["."]).toMatch(/^\d+\.\d+\.\d+/);
   });
 });

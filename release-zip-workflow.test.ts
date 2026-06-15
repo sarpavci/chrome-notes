@@ -28,9 +28,9 @@ describe("upload-release-zip workflow", () => {
   it("runs npm ci and npm run zip steps", () => {
     const raw = readFileSync(workflowPath, "utf-8");
     const workflow = parse(raw);
-    const steps: { run?: string; uses?: string }[] = Object.values(
-      workflow.jobs
-    ).flatMap((job: { steps?: { run?: string; uses?: string }[] }) => job.steps ?? []);
+    const steps: { run?: string; uses?: string }[] = (
+      Object.values(workflow.jobs) as { steps?: { run?: string; uses?: string }[] }[]
+    ).flatMap((job) => job.steps ?? []);
     const runs = steps.map((s) => s.run ?? "").filter(Boolean);
     expect(runs.some((r) => r.includes("npm ci"))).toBe(true);
     expect(runs.some((r) => r.includes("npm run zip"))).toBe(true);
@@ -39,9 +39,9 @@ describe("upload-release-zip workflow", () => {
   it("uploads artifact using the *-chrome.zip glob", () => {
     const raw = readFileSync(workflowPath, "utf-8");
     const workflow = parse(raw);
-    const steps: { run?: string }[] = Object.values(workflow.jobs).flatMap(
-      (job: { steps?: { run?: string }[] }) => job.steps ?? []
-    );
+    const steps: { run?: string }[] = (
+      Object.values(workflow.jobs) as { steps?: { run?: string }[] }[]
+    ).flatMap((job) => job.steps ?? []);
     const uploadStep = steps.find((s) => s.run?.includes("gh release upload"));
     expect(uploadStep).toBeDefined();
     expect(uploadStep!.run).toContain("*-chrome.zip");

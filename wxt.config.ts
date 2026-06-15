@@ -2,7 +2,6 @@ import { defineConfig } from "wxt";
 import path from "path";
 
 export default defineConfig({
-  extensionApi: "chrome",
   modules: ["@wxt-dev/module-react"],
   manifest: {
     name: "Chrome Notes",
