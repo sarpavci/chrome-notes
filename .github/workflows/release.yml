@@ -1,0 +1,71 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — verify secrets without submitting'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and zip
+        run: npm run zip
+
+      - name: Guard — fail clearly if required secrets are absent
+        run: |
+          missing=""
+          [ -z "$CHROME_EXTENSION_ID" ]   && missing="$missing CHROME_EXTENSION_ID"
+          [ -z "$CHROME_CLIENT_ID" ]       && missing="$missing CHROME_CLIENT_ID"
+          [ -z "$CHROME_CLIENT_SECRET" ]   && missing="$missing CHROME_CLIENT_SECRET"
+          [ -z "$CHROME_REFRESH_TOKEN" ]   && missing="$missing CHROME_REFRESH_TOKEN"
+          [ -z "$EDGE_PRODUCT_ID" ]        && missing="$missing EDGE_PRODUCT_ID"
+          [ -z "$EDGE_CLIENT_ID" ]         && missing="$missing EDGE_CLIENT_ID"
+          [ -z "$EDGE_API_KEY" ]           && missing="$missing EDGE_API_KEY"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing required secrets:$missing"
+            exit 1
+          fi
+        env:
+          CHROME_EXTENSION_ID:  ${{ secrets.CHROME_EXTENSION_ID }}
+          CHROME_CLIENT_ID:     ${{ secrets.CHROME_CLIENT_ID }}
+          CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          EDGE_PRODUCT_ID:      ${{ secrets.EDGE_PRODUCT_ID }}
+          EDGE_CLIENT_ID:       ${{ secrets.EDGE_CLIENT_ID }}
+          EDGE_API_KEY:         ${{ secrets.EDGE_API_KEY }}
+
+      - name: Submit to Chrome Web Store and Edge Add-ons
+        run: |
+          DRY_RUN_FLAG=""
+          [ "$INPUT_DRY_RUN" = "true" ] && DRY_RUN_FLAG="--dry-run"
+          npx wxt submit \
+            $DRY_RUN_FLAG \
+            --chrome-zip .output/*-chrome.zip \
+            --edge-zip   .output/*-chrome.zip
+        env:
+          INPUT_DRY_RUN:        ${{ github.event.inputs.dry_run }}
+          CHROME_EXTENSION_ID:  ${{ secrets.CHROME_EXTENSION_ID }}
+          CHROME_CLIENT_ID:     ${{ secrets.CHROME_CLIENT_ID }}
+          CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          EDGE_PRODUCT_ID:      ${{ secrets.EDGE_PRODUCT_ID }}
+          EDGE_CLIENT_ID:       ${{ secrets.EDGE_CLIENT_ID }}
+          EDGE_API_KEY:         ${{ secrets.EDGE_API_KEY }}
