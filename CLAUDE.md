@@ -22,11 +22,12 @@ npm run zip      # wxt zip — packages extension as .zip for Chrome Web Store
 ## Structure
 ```
 entrypoints/
-  popup/         — action popup (360×480)
+  sidepanel/     — side panel (full-height, flexible-width)
     index.html
     main.tsx
     App.tsx
-    style.css    — Tailwind + shadcn CSS variable base
+    style.css    — Tailwind + shadcn CSS variable base + Linear tokens
+  background.ts  — service worker; sets openPanelOnActionClick on install
 components/
   ui/            — shadcn/ui components (add with `npx shadcn@latest add <component>`)
 lib/
@@ -38,10 +39,10 @@ Config is in `components.json`. Add components:
 ```bash
 npx shadcn@latest add button
 ```
-CSS variables are defined in `entrypoints/popup/style.css`.
+CSS variables are defined in `entrypoints/sidepanel/style.css`.
 
 ## Path aliases
 `@/` maps to the repo root (e.g. `@/components/ui/button`).
 
 ## Manifest
-MV3, permissions: `["storage"]` only.
+MV3, permissions: `["storage", "sidePanel"]`. Toolbar click opens the side panel via `openPanelOnActionClick`. No `default_popup`.
