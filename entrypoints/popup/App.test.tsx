@@ -174,6 +174,42 @@ describe("App — design tokens", () => {
   });
 });
 
+describe("App — Linear v2 design tokens", () => {
+  it("root container has rounded-xl class for 12px rounded corners", () => {
+    const { container } = render(<App />);
+    const root = container.firstChild as HTMLElement;
+    expect(root).toHaveClass("rounded-xl");
+  });
+
+  it("root container has overflow-hidden to clip borders to rounded corners", () => {
+    const { container } = render(<App />);
+    const root = container.firstChild as HTMLElement;
+    expect(root).toHaveClass("overflow-hidden");
+  });
+
+  it("Copy icon button retains aria-label for accessibility", () => {
+    render(<App />);
+    expect(screen.getByRole("button", { name: /copy/i })).toBeInTheDocument();
+  });
+
+  it("Clear icon button retains aria-label for accessibility", () => {
+    render(<App />);
+    expect(screen.getByRole("button", { name: /clear/i })).toBeInTheDocument();
+  });
+
+  it("root container uses the Linear dark canvas background color", () => {
+    const { container } = render(<App />);
+    const root = container.firstChild as HTMLElement;
+    // Linear dark canvas: #0f1011 — jsdom normalizes hex to rgb(15, 16, 17)
+    expect(root.style.backgroundColor).toBe("rgb(15, 16, 17)");
+  });
+
+  it("placeholder text is 'Start typing your note…'", () => {
+    render(<App />);
+    expect(screen.getByPlaceholderText("Start typing your note…")).toBeInTheDocument();
+  });
+});
+
 describe("App — clear confirm flow", () => {
   it("clear button is disabled when textarea is empty", () => {
     render(<App />);

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { Copy, Trash2 } from "lucide-react";
 
 type SaveStatus = "saved" | "saving";
 type HeaderMode = "normal" | "confirm-clear";
@@ -64,53 +65,99 @@ export default function App() {
   const isEmpty = note.length === 0;
 
   return (
-    <div className="w-[360px] h-[480px] bg-white flex flex-col" style={{ fontFamily: "Roboto, system-ui, sans-serif" }}>
+    <div
+      className="w-[360px] h-[480px] flex flex-col rounded-xl overflow-hidden"
+      style={{
+        backgroundColor: "#0f1011",
+        fontFamily: '"Inter Variable", Inter, system-ui, sans-serif',
+        fontFeatureSettings: '"cv01", "ss03"',
+      }}
+    >
       {/* Header */}
-      <div className="h-12 flex items-center px-3 flex-shrink-0" style={{ borderBottom: "1px solid #DADCE0" }}>
+      <div
+        className="h-12 flex items-center px-3 flex-shrink-0"
+        style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}
+      >
         {headerMode === "normal" ? (
           <>
-            <span className="flex-1 text-sm font-medium" style={{ color: "#202124", fontSize: 14, fontWeight: 500 }}>
+            <span
+              className="flex-1"
+              style={{ color: "#f7f8f8", fontSize: 14, fontWeight: 510 }}
+            >
               Notes
             </span>
             <button
               title={copied ? "Copied!" : "Copy"}
               onClick={handleCopy}
               disabled={isEmpty}
-              className="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-8 h-8 flex items-center justify-center rounded disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{ color: "#8a8f98" }}
+              onMouseEnter={(e) => {
+                if (!isEmpty) {
+                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(255,255,255,0.05)";
+                  (e.currentTarget as HTMLButtonElement).style.color = "#f7f8f8";
+                }
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.backgroundColor = "transparent";
+                (e.currentTarget as HTMLButtonElement).style.color = "#8a8f98";
+              }}
               aria-label={copied ? "Copied!" : "Copy"}
             >
-              <span className="material-symbols-outlined" style={{ fontSize: 18, color: "#5F6368" }}>
-                content_copy
-              </span>
+              <Copy size={18} />
             </button>
             <button
               title="Clear"
               onClick={handleClearClick}
               disabled={isEmpty}
-              className="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed ml-1"
+              className="w-8 h-8 flex items-center justify-center rounded disabled:opacity-40 disabled:cursor-not-allowed ml-1"
+              style={{ color: "#8a8f98" }}
+              onMouseEnter={(e) => {
+                if (!isEmpty) {
+                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(255,255,255,0.05)";
+                  (e.currentTarget as HTMLButtonElement).style.color = "#f7f8f8";
+                }
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.backgroundColor = "transparent";
+                (e.currentTarget as HTMLButtonElement).style.color = "#8a8f98";
+              }}
               aria-label="Clear"
             >
-              <span className="material-symbols-outlined" style={{ fontSize: 18, color: "#5F6368" }}>
-                delete
-              </span>
+              <Trash2 size={18} />
             </button>
           </>
         ) : (
           <>
-            <span className="flex-1 text-sm" style={{ color: "#202124", fontSize: 13 }}>
+            <span
+              className="flex-1"
+              style={{ color: "#d0d6e0", fontSize: 13, fontWeight: 400 }}
+            >
               Clear all notes?
             </span>
             <button
               onClick={handleCancelClear}
-              className="px-3 py-1 text-sm rounded hover:bg-gray-100"
-              style={{ color: "#1A73E8", fontSize: 13 }}
+              className="px-3 py-1 text-sm rounded"
+              style={{ color: "#7170ff", fontSize: 13 }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(255,255,255,0.05)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.backgroundColor = "transparent";
+              }}
             >
               Cancel
             </button>
             <button
               onClick={handleConfirmClear}
-              className="px-3 py-1 text-sm rounded hover:bg-red-50 ml-1"
-              style={{ color: "#D93025", fontSize: 13 }}
+              className="px-3 py-1 text-sm rounded ml-1"
+              style={{ color: "#eb5757", fontSize: 13 }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(235,87,87,0.12)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.backgroundColor = "transparent";
+              }}
             >
               Clear
             </button>
@@ -128,18 +175,21 @@ export default function App() {
         className="flex-1 resize-none border-none outline-none p-3"
         style={{
           fontSize: 13,
-          color: "#202124",
+          color: "#f7f8f8",
+          backgroundColor: "transparent",
           fontFamily: "inherit",
+          fontFeatureSettings: "inherit",
           lineHeight: 1.5,
+          caretColor: "#7170ff",
         }}
       />
 
       {/* Status footer */}
       <div
         className="h-7 flex items-center px-3 flex-shrink-0"
-        style={{ borderTop: "1px solid #DADCE0" }}
+        style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
       >
-        <span style={{ fontSize: 13, color: "#5F6368" }}>
+        <span style={{ fontSize: 13, color: "#8a8f98" }}>
           {saveStatus === "saving" ? "Saving…" : "Saved"}
         </span>
       </div>
