@@ -26,30 +26,19 @@
     --border: 0 0% 8%;
     --input: 0 0% 8%;
     --ring: 243 100% 72%;
-    --radius: 0.375rem;
   }
 
   * {
     border-color: hsl(var(--border));
   }
 
-  /* Rounded corners on the popup window:
-     Apply border-radius + overflow:hidden to html so Chrome clips the
-     entire document (not just the inner div) to the rounded shape.
-     Without this, border-radius on the app div has no visible effect —
-     the browser popup frame paints square behind it. */
-  html {
-    background: transparent;
-    border-radius: 12px;
-    overflow: hidden;
+  html,
+  body,
+  #root {
+    height: 100%;
     margin: 0;
     padding: 0;
-  }
-
-  body {
-    background: transparent;
-    margin: 0;
-    padding: 0;
+    background: #0f1011;
   }
 
   body {

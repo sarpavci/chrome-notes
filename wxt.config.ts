@@ -7,7 +7,10 @@ export default defineConfig({
   manifest: {
     name: "Chrome Notes",
     description: "Quick notes in your browser",
-    permissions: ["storage"],
+    permissions: ["storage", "sidePanel"],
+    side_panel: {
+      default_path: "sidepanel.html",
+    },
   },
   vite: () => ({
     resolve: {

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Copy, Trash2 } from "lucide-react";
+import { Copy, Trash2, Check } from "lucide-react";
 
 type SaveStatus = "saved" | "saving";
 type HeaderMode = "normal" | "confirm-clear";
@@ -66,17 +66,21 @@ export default function App() {
 
   return (
     <div
-      className="w-[360px] h-[480px] flex flex-col rounded-xl overflow-hidden"
+      className="h-full flex flex-col"
       style={{
         backgroundColor: "#0f1011",
+        borderLeft: "1px solid rgba(255,255,255,.08)",
         fontFamily: '"Inter Variable", Inter, system-ui, sans-serif',
         fontFeatureSettings: '"cv01", "ss03"',
       }}
     >
       {/* Header */}
       <div
-        className="h-12 flex items-center px-3 flex-shrink-0"
-        style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}
+        className="flex items-center px-3 flex-shrink-0"
+        style={{
+          height: 48,
+          borderBottom: "1px solid rgba(255,255,255,0.08)",
+        }}
       >
         {headerMode === "normal" ? (
           <>
@@ -104,7 +108,7 @@ export default function App() {
               }}
               aria-label={copied ? "Copied!" : "Copy"}
             >
-              <Copy size={18} />
+              {copied ? <Check size={18} style={{ color: "#7170ff" }} /> : <Copy size={18} />}
             </button>
             <button
               title="Clear"
@@ -165,15 +169,16 @@ export default function App() {
         )}
       </div>
 
-      {/* Textarea */}
+      {/* Textarea — flex:1, full height */}
       <textarea
         ref={textareaRef}
         autoFocus
         value={note}
         onChange={handleChange}
         placeholder="Start typing your note…"
-        className="flex-1 resize-none border-none outline-none p-3"
+        className="flex-1 resize-none border-none outline-none"
         style={{
+          padding: 12,
           fontSize: 13,
           color: "#f7f8f8",
           backgroundColor: "transparent",
@@ -186,8 +191,11 @@ export default function App() {
 
       {/* Status footer */}
       <div
-        className="h-7 flex items-center px-3 flex-shrink-0"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
+        className="flex items-center px-3 flex-shrink-0"
+        style={{
+          height: 28,
+          borderTop: "1px solid rgba(255,255,255,0.08)",
+        }}
       >
         <span style={{ fontSize: 13, color: "#8a8f98" }}>
           {saveStatus === "saving" ? "Saving…" : "Saved"}

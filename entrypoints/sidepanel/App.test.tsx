@@ -50,7 +50,41 @@ beforeEach(() => {
   });
 });
 
-describe("App — restore on open", () => {
+describe("SidePanel App — surface chrome", () => {
+  it("root container does NOT have rounded-xl (no popup rounding)", () => {
+    const { container } = render(<App />);
+    const root = container.firstChild as HTMLElement;
+    expect(root).not.toHaveClass("rounded-xl");
+  });
+
+  it("root container does NOT have overflow-hidden", () => {
+    const { container } = render(<App />);
+    const root = container.firstChild as HTMLElement;
+    expect(root).not.toHaveClass("overflow-hidden");
+  });
+
+  it("root container has h-full and flex-col layout", () => {
+    const { container } = render(<App />);
+    const root = container.firstChild as HTMLElement;
+    expect(root).toHaveClass("h-full");
+    expect(root).toHaveClass("flex");
+    expect(root).toHaveClass("flex-col");
+  });
+
+  it("root container has canvas background color #0f1011", () => {
+    const { container } = render(<App />);
+    const root = container.firstChild as HTMLElement;
+    expect(root.style.backgroundColor).toBe("rgb(15, 16, 17)");
+  });
+
+  it("root container has border-left style", () => {
+    const { container } = render(<App />);
+    const root = container.firstChild as HTMLElement;
+    expect(root.style.borderLeft).toBeTruthy();
+  });
+});
+
+describe("SidePanel App — restore on open", () => {
   it("restores saved note from storage on mount", async () => {
     storageStore = { note: "my saved note" };
     storageMock.get.mockImplementationOnce((
@@ -79,7 +113,7 @@ describe("App — restore on open", () => {
   });
 });
 
-describe("App — auto-save debounce", () => {
+describe("SidePanel App — auto-save debounce", () => {
   it("shows 'Saving…' while typing", async () => {
     vi.useFakeTimers({ shouldAdvanceTime: false });
     render(<App />);
@@ -123,7 +157,7 @@ describe("App — auto-save debounce", () => {
   });
 });
 
-describe("App — copy button", () => {
+describe("SidePanel App — copy button", () => {
   it("copy button is disabled when textarea is empty", () => {
     render(<App />);
     expect(screen.getByTitle("Copy")).toBeDisabled();
@@ -148,7 +182,6 @@ describe("App — copy button", () => {
 
     fireEvent.change(screen.getByRole("textbox"), { target: { value: "copy me" } });
 
-    // Use fireEvent.click to avoid userEvent + fake timer issues
     await act(async () => {
       fireEvent.click(screen.getByTitle("Copy"));
     });
@@ -164,7 +197,7 @@ describe("App — copy button", () => {
   });
 });
 
-describe("App — design tokens", () => {
+describe("SidePanel App — design tokens", () => {
   it("status footer renders with 13px body font size", async () => {
     render(<App />);
     await waitFor(() => {
@@ -172,45 +205,24 @@ describe("App — design tokens", () => {
       expect(footer).toHaveStyle({ fontSize: "13px" });
     });
   });
-});
-
-describe("App — Linear v2 design tokens", () => {
-  it("root container has rounded-xl class for 12px rounded corners", () => {
-    const { container } = render(<App />);
-    const root = container.firstChild as HTMLElement;
-    expect(root).toHaveClass("rounded-xl");
-  });
-
-  it("root container has overflow-hidden to clip borders to rounded corners", () => {
-    const { container } = render(<App />);
-    const root = container.firstChild as HTMLElement;
-    expect(root).toHaveClass("overflow-hidden");
-  });
-
-  it("Copy icon button retains aria-label for accessibility", () => {
-    render(<App />);
-    expect(screen.getByRole("button", { name: /copy/i })).toBeInTheDocument();
-  });
-
-  it("Clear icon button retains aria-label for accessibility", () => {
-    render(<App />);
-    expect(screen.getByRole("button", { name: /clear/i })).toBeInTheDocument();
-  });
-
-  it("root container uses the Linear dark canvas background color", () => {
-    const { container } = render(<App />);
-    const root = container.firstChild as HTMLElement;
-    // Linear dark canvas: #0f1011 — jsdom normalizes hex to rgb(15, 16, 17)
-    expect(root.style.backgroundColor).toBe("rgb(15, 16, 17)");
-  });
 
   it("placeholder text is 'Start typing your note…'", () => {
     render(<App />);
     expect(screen.getByPlaceholderText("Start typing your note…")).toBeInTheDocument();
   });
+
+  it("Copy icon button has aria-label for accessibility", () => {
+    render(<App />);
+    expect(screen.getByRole("button", { name: /copy/i })).toBeInTheDocument();
+  });
+
+  it("Clear icon button has aria-label for accessibility", () => {
+    render(<App />);
+    expect(screen.getByRole("button", { name: /clear/i })).toBeInTheDocument();
+  });
 });
 
-describe("App — clear confirm flow", () => {
+describe("SidePanel App — clear confirm flow", () => {
   it("clear button is disabled when textarea is empty", () => {
     render(<App />);
     expect(screen.getByTitle("Clear")).toBeDisabled();
