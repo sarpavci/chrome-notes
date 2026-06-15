@@ -68,8 +68,15 @@ describe("Generated manifest.json shape", () => {
     expect(suggested?.mac).toBe("Command+Shift+Y");
   });
 
-  it("has only storage permission", () => {
-    expect(manifest.permissions).toEqual(["storage"]);
+  it("has storage and sidePanel permissions", () => {
+    expect(manifest.permissions).toContain("storage");
+    expect(manifest.permissions).toContain("sidePanel");
+  });
+
+  it("has side_panel with default_path", () => {
+    const sidePanel = manifest.side_panel as Record<string, unknown> | undefined;
+    expect(sidePanel).toBeDefined();
+    expect(sidePanel?.default_path).toBe("sidepanel.html");
   });
 
   it("has minimum_chrome_version", () => {
