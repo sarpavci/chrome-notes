@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Linear design system tokens */
+    --linear-canvas: #0f1011;
+    --linear-elevated: #191a1b;
+    --linear-text-primary: #f7f8f8;
+    --linear-text-secondary: #d0d6e0;
+    --linear-text-muted: #8a8f98;
+    --linear-accent: #7170ff;
+    --linear-accent-brand: #5e6ad2;
+    --linear-destructive: #eb5757;
+    --linear-border-subtle: rgba(255, 255, 255, 0.05);
+    --linear-border: rgba(255, 255, 255, 0.08);
+    --linear-hover: rgba(255, 255, 255, 0.05);
+    --linear-hover-destructive: rgba(235, 87, 87, 0.12);
+
+    /* shadcn/ui CSS variable bridge → Linear tokens */
+    --background: 0 0% 6.3%;
+    --foreground: 0 0% 97%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 220 5% 60%;
+    --border: 0 0% 8%;
+    --input: 0 0% 8%;
+    --ring: 243 100% 72%;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #0f1011;
+  }
+
+  body {
+    font-family: "Inter Variable", Inter, system-ui, sans-serif;
+    font-feature-settings: "cv01", "ss03";
+    color: var(--linear-text-primary);
+  }
+}
