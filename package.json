@@ -1,7 +1,7 @@
 {
   "name": "chrome-notes",
   "description": "Chrome Notes - a note-taking Chrome extension",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "wxt",
