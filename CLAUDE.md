@@ -46,3 +46,35 @@ CSS variables are defined in `entrypoints/sidepanel/style.css`.
 
 ## Manifest
 MV3, permissions: `["storage", "sidePanel"]`. Toolbar click opens the side panel via `openPanelOnActionClick`. No `default_popup`.
+
+## Versioning & Releases
+
+This project uses **[release-please](https://github.com/googleapis/release-please)** to automate versioning and GitHub Releases. Everything is driven by commit messages following the [Conventional Commits](https://www.conventionalcommits.org/) spec.
+
+### How it works
+
+1. Merge commits with Conventional Commit messages into `main`.
+2. release-please opens (or updates) a **Release PR** that bumps `package.json` `version` and updates `CHANGELOG.md`.
+3. Merge the Release PR → release-please creates a **git tag** and a **GitHub Release** automatically.
+
+### Commit type → SemVer bump mapping
+
+| Commit prefix | Example | Bump |
+|---|---|---|
+| `fix:` | `fix: handle null note body` | **patch** (0.0.X) |
+| `feat:` | `feat: add folder support` | **minor** (0.X.0) |
+| `feat!:` or any type with `BREAKING CHANGE:` footer | `feat!: remove legacy storage key` | **major** (X.0.0) |
+| `chore:`, `docs:`, `refactor:`, `test:`, `style:`, `ci:` | `chore: update deps` | no bump (changelog entry only) |
+
+To force a **major** bump, either append `!` to the type (`feat!:`, `fix!:`) or include a `BREAKING CHANGE: <description>` trailer in the commit body.
+
+### Version source of truth
+
+`package.json` `version` is the **single source of truth**. WXT reads it and writes the value into `manifest.json` automatically during `build` and `zip`. Never hand-edit the `version` field in the manifest.
+
+### Cutting a release (end-to-end)
+
+1. Land all intended commits on `main` using Conventional Commit messages.
+2. release-please opens or refreshes the Release PR — review the auto-generated changelog.
+3. Merge the Release PR; the tag and GitHub Release are created automatically.
+4. The `.zip` artifact attached to the GitHub Release is produced by the `release` CI job and is ready for Chrome Web Store submission.
