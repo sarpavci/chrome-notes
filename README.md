@@ -44,6 +44,8 @@ Add these to **Settings → Secrets and variables → Actions** in the repositor
 | `CHROME_CLIENT_SECRET` | Google Cloud OAuth 2.0 client credentials |
 | `CHROME_REFRESH_TOKEN` | OAuth refresh token obtained via the CWS API setup flow |
 
+See **[Retrieving Chrome Web Store API credentials](docs/chrome-web-store-credentials.md)** for a step-by-step guide to obtaining `CHROME_CLIENT_ID`, `CHROME_CLIENT_SECRET`, and `CHROME_REFRESH_TOKEN`.
+
 **Microsoft Edge Add-ons** (from the [Microsoft Partner Center](https://partner.microsoft.com/dashboard/microsoftedge/)):
 
 | Secret name | Where to find it |
